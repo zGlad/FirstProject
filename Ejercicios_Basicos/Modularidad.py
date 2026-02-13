@@ -14,7 +14,7 @@ def es_divisible(n, d):
             - 0 si no es divisible por ninguno de los anteriores.
             - Mensaje de error si d es 0.
     """
-    # Paso 1: Verificcamos que d no sea 0 para evitar divisiones inválidas 
+    # Paso 1: Verificamos que d no sea 0 para evitar divisiones inválidas 
     if d == 0: 
         return "No se puede dividir por 0"
     
