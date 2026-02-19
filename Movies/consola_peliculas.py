@@ -28,7 +28,8 @@ def mostrar_informacion_pelicula(pelicula: dict)-> None:
             - clasificacion (str): Clasificacion de restriccion por edad
             - hora (int): Hora de inicio de la pelicula
             - dia (str): Indica que dia de la semana se planea ver la pelicula
-    """       
+    """      
+    # Obtenemos los datos de la pelicula 
     nombre = pelicula["nombre"]
     genero = pelicula["genero"]
     duracion = pelicula["duracion"]
@@ -37,18 +38,23 @@ def mostrar_informacion_pelicula(pelicula: dict)-> None:
     hora = pelicula["hora"]
     dia = pelicula["dia"]
     
+    # Mostramos la informacion de la pelicula
+    
     print("Nombre: " + nombre + " - Anio: " + str(anio) + " - Duracion: " + str(duracion) + "  mins" )
     print("Genero: " + genero + " - Clasificacion: " + clasificacion)
     
+    # Formateamos la hora
     if (hora//100 < 10):
         hora_formato = "0"+ str(hora//100)
     else:
         hora_formato = str(hora//100)
     
-    if (hora%100 < 10):
+    # Formateamos los minutos
+    if (hora%100 < 10): 
         min_formato = "0"+ str(hora%100)
     else:
         min_formato = str(hora%100)
+
 
     print("Dia: " + dia + " Hora: " + hora_formato + ":" + min_formato)
 
@@ -61,6 +67,7 @@ def ejecutar_encontrar_pelicula_mas_larga(p1: dict, p2: dict, p3: dict, p4: dict
         p4 (dict): Diccionario que contiene la informacion de la pelicula 4.
         p5 (dict): Diccionario que contiene la informacion de la pelicula 5.
     """
+    # 1. Buscamos la pelicula mas larga
     pelicula_ganadora = mod.encontrar_pelicula_mas_larga(p1, p2, p3, p4, p5)
     
     # 2. Extraemos los datos que queremos mostrar (nombre y duración)
@@ -79,8 +86,10 @@ def ejecutar_consultar_duracion_promedio_peliculas(p1: dict, p2: dict, p3: dict,
         p4 (dict): Diccionario que contiene la informacion de la pelicula 4.
         p5 (dict): Diccionario que contiene la informacion de la pelicula 5.
     """
+    # 1. Obtenemos la duracion promedio
     pelicula_promedio = mod.duracion_promedio_peliculas(p1, p2, p3, p4, p5)
     
+    # 2. Imprimimos el resultado para que el usuario lo vea
     print(f"La duración promedio de las peliculas es de {pelicula_promedio}")
     
     
@@ -101,7 +110,7 @@ def ejecutar_encontrar_estrenos(p1: dict, p2: dict, p3: dict, p4: dict, p5: dict
     # Obtenemos nuestras peliculas
     peliculas = mod.encontrar_estrenos(p1, p2, p3, p4, p5, anio)
     
-    
+    #  Verificamos si hay peliculas e imprimimos
     if peliculas == "Ninguna":
         print("No hay peliculas de estreno posteriores a " + str(anio))
         
@@ -131,6 +140,8 @@ def ejecutar_cuantas_peliculas_18_mas(p1: dict, p2: dict, p3: dict, p4: dict, p5
     # 2. Imprimimos el resultado para que el usuario lo vea
     print(f"Hay {cantidad_peliculas} peliculas de 18+ en la agenda.")
     
+    
+    
 def ejecutar_reagendar_pelicula(p1: dict, p2: dict, p3: dict, p4: dict, p5: dict)->None:
     """Ejecuta la opcion de reagendar una pelicula
     Parametros:
@@ -142,24 +153,26 @@ def ejecutar_reagendar_pelicula(p1: dict, p2: dict, p3: dict, p4: dict, p5: dict
     """
     print("Reagendar una pelicula de la agenda")
     
-    #Pides los datos locales 
+    # 1. Obtenemos la pelicula 
     peli = input("Ingrese el nombre de la pelicula que desea reagendar: ")
     pelicula = mod.encontrar_pelicula(peli,p1,p2,p3,p4,p5)
     
+    # 2. Preguntamos si la pelicula que queremos reagendar existe
     if pelicula is None:
         print("No hay ninguna pelicula con este nombre")
+    
     
     else:
         nueva_hora = int(input("Ingrese la nueva hora: "))
         nuevo_dia = input("Ingrese el nuevo día: ")
         control_horario = input("¿Desea control horario? (si/no): ").lower() == "si"
 
-    
-        exito = mod.reagendar_pelicula(pelicula, nueva_hora, nuevo_dia, control_horario, p1, p2, p3, p4, p5 )
+    # 3. Reagendamos la pelicula
+    exito = mod.reagendar_pelicula(pelicula, nueva_hora, nuevo_dia, control_horario, p1, p2, p3, p4, p5 )
         
-        if exito:
+    if exito:
             print("La pelicula se ha reagendado correctamente.")
-        else:
+    else:
             print("No se ha podido reagendar la pelicula.")
 
 def ejecutar_decidir_invitar(p1: dict, p2: dict, p3: dict, p4: dict, p5: dict)->None:
@@ -173,6 +186,7 @@ def ejecutar_decidir_invitar(p1: dict, p2: dict, p3: dict, p4: dict, p5: dict)->
     """
     print("Decidir si se puede invitar a alguien a ver una pelicula")
 
+
     nom_peli = input("Ingrese el nombre de la pelicula: ")
     pelicula = mod.encontrar_pelicula(nom_peli,p1,p2,p3,p4,p5)
 
@@ -180,7 +194,15 @@ def ejecutar_decidir_invitar(p1: dict, p2: dict, p3: dict, p4: dict, p5: dict)->
         print("No hay ninguna pelicula con este nombre")
     
     else:
-        mod.decidir_invitar(pelicula)
+        # Convertimos la respuesta en un booleano claro
+        edad = int(input("Ingrese la edad del invitado: "))
+        autorizacion_padres = input("¿El invitado cuenta con la autorizacion de sus padres? (si/no): ").lower() == "si"
+        exito = mod.decidir_invitar(pelicula,edad, autorizacion_padres)
+        
+        if exito:
+            print("Se puede invitar a la pelicula")
+        else:
+            print("No se puede invitar a la pelicula")
 def iniciar_aplicacion():
     """Inicia la ejecución de la aplicación por consola.
     Esta funcion primero crea las cinco peliculas que se van a manejar en la agenda.

@@ -69,6 +69,7 @@ def encontrar_pelicula(nombre_pelicula: str, p1: dict, p2: dict, p3: dict, p4: d
         dict: Diccionario de la pelicula cuyo nombre fue dado por parametro. 
         None si no se encuentra una pelicula con ese nombre.
     """
+    # Buscamos la pelicula en cada diccionario por medio de su nombre
     if nombre_pelicula == p1["nombre"]:
         return p1
     elif nombre_pelicula == p2["nombre"]:
@@ -95,8 +96,8 @@ def encontrar_pelicula_mas_larga(p1: dict, p2: dict, p3: dict, p4: dict, p5: dic
         dict: El diccionario de la pelicula de mayor duracion
     """
     MasLarga = p1
-    
-    
+
+    # Comparamos duraciones para encontrar la mas larga
     if p2["duracion"] > MasLarga["duracion"]: 
         MasLarga = p2 # Si p2 es más larga, ella es el nuevo mas larga
         
@@ -126,14 +127,15 @@ def duracion_promedio_peliculas(p1: dict, p2: dict, p3: dict, p4: dict, p5: dict
     Retorna:
         str: la duracion promedio de las peliculas en formato 'HH:MM'
     """
-    
+    # 1. Obtenemos la duracion promedio
     sumaTotal = p1["duracion"] + p2["duracion"] + p3["duracion"] + p4["duracion"] + p5["duracion"]
     promedio = int(sumaTotal/5)
     
+    # 2. Convertimos la duracion promedio a horas y minutos
     horas = promedio // 60 
     minutos = promedio % 60
     
-    
+    # 3. Devolvemos la duracion promedio
     return f" {horas:02d}:{minutos:02d}"
 
 def encontrar_estrenos(p1: dict, p2: dict, p3: dict, p4: dict, p5: dict, anio: int) -> str:
@@ -151,14 +153,19 @@ def encontrar_estrenos(p1: dict, p2: dict, p3: dict, p4: dict, p5: dict, anio: i
         Si hay mas de una pelicula, entonces se retornan los nombres de todas las peliculas 
         encontradas separadas por comas. Si ninguna pelicula coincide, retorna "Ninguna".
     """
+    # Creamos una lista con todas las peliculas
     peliculas = [p1, p2, p3, p4, p5]
+    # Creamos una lista con las peliculas encontradas
     peliculas_encontradas = []
     
     for pelicula in peliculas:
+        # Si la pelicula tiene un anio posterior al recibido
         if pelicula["anio"] > anio:
+            # Lo agregamos a la lista
             peliculas_encontradas.append(pelicula["nombre"])
-        
+            
     if len(peliculas_encontradas) > 0:
+        # retornamos las peliculas encontradas separadas por comas
         return ", ".join(peliculas_encontradas  )
     
     return "Ninguna"
@@ -174,13 +181,16 @@ def cuantas_peliculas_18_mas(p1: dict, p2: dict, p3: dict, p4: dict, p5: dict) -
     Retorna:
         int: Numero de peliculas con clasificacion '18+'
     """
+    # 1. Recorremos todas las peliculas
     contador = 0
     peliculas = [p1, p2, p3, p4, p5]
     
     for pelicula in peliculas:
+        # 2. Verificamos si la pelicula es de 18+
         if pelicula["clasificacion"] == '18+':
             contador += 1
-        
+            
+    # 3. Retornamos el contador
     return contador
     return 0 
         
@@ -254,16 +264,11 @@ def decidir_invitar(peli: dict, edad_invitado: int, autorizacion_padres: bool)->
     Retorna:
         bool: True en caso de que se pueda invitar a la persona, False de lo contrario.
     """
-    # 1. Menor de edad, pero con autorizacion de los padres
-    if edad_invitado < 18 and autorizacion_padres:
-        return True
-    # 2. Menor de edad y sin autorizacion de los padres
-    if edad_invitado < 18 and not autorizacion_padres:
-        return False
-    # 3. Mayor de edad
-    if edad_invitado >= 18:
+    # Verificamos si la edad del invitado es mayor o igual a 18 o si tiene autorizacion de sus padres
+    if edad_invitado >= 18 or autorizacion_padres:
         return True
     
+    # En cualquier otro caso (menor sin permiso), es False.
     return False
 
 
